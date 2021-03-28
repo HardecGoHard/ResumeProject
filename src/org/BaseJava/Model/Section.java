@@ -1,4 +1,6 @@
 package org.BaseJava.Model;
 
-public abstract class Section {
+import java.io.Serializable;
+
+public abstract class Section implements Serializable {
 }

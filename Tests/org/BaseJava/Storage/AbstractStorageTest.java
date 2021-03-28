@@ -5,6 +5,7 @@ import org.BaseJava.Model.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
     protected AbstractStorage strorage;
+    protected static final File directory = new File("C:");
 
     protected static final Resume RESUME_1;
     protected static final Resume RESUME_2;
