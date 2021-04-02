@@ -2,6 +2,7 @@ package org.BaseJava.Model;
 
 import org.BaseJava.util.DateUtil;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class Organisation {
+public class Organisation implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private final Link HomePage;
     private List<Position> listOfPosition;
 
@@ -35,7 +38,9 @@ public class Organisation {
         return Objects.hash(HomePage);
     }
 
-    public static class Position {
+    public static class Position implements Serializable
+    {
+        private static final long serialVersionUID = 1L;
 
         private final String title;
         private final String description;

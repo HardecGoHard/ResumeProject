@@ -9,8 +9,7 @@ public class MapStorage extends AbstractStorage<String> {
 
     @Override
     protected String getSearchKey(String uuid) {
-        for (Map.Entry<String, Resume> entry :
-                mapResumeStorage.entrySet()) {
+        for (Map.Entry<String, Resume> entry : mapResumeStorage.entrySet()) {
             if (entry.getKey().equals(uuid))
                 return entry.getKey();
         }

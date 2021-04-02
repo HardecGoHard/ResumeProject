@@ -3,7 +3,9 @@ package org.BaseJava.Model;
 import java.util.Objects;
 
 public class TextSection extends Section{
-   protected String content;
+    private static final long serialVersionUID = 1L;
+
+    protected String content;
 
     public TextSection(String content) {
         this.content = content;

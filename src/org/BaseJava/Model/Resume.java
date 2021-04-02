@@ -7,6 +7,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Resume implements Comparable<Resume>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String fullName;
     private String uuid;
 
@@ -14,10 +16,10 @@ public class Resume implements Comparable<Resume>, Serializable {
     private final Map<ResumeSection, Section> resumeSectionStringEnumMap = new EnumMap<>(ResumeSection.class);
 
     public Resume(String fullName) {
-        this(UUID.randomUUID().toString(), fullName);
+        this( fullName,UUID.randomUUID().toString());
     }
 
-    public Resume(String uuid, String fullName) {
+    public Resume( String fullName,String uuid) {
         Objects.requireNonNull(uuid, "Uuid must be not empty");
         Objects.requireNonNull(fullName, "FullName must be not empty");
         this.uuid = uuid;
@@ -70,9 +72,10 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     @Override
     public String toString() {
-        return uuid;
+        return "Resume{" +
+                "fullName='" + fullName + '\'' +
+                ", uuid='" + uuid + '\'' + '}';
     }
-
 
     @Override
     public int compareTo(Resume o) {

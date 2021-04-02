@@ -18,14 +18,8 @@ public class TestArray {
     final static ListArrayStorage ARRAY_LIST_STORAGE = new ListArrayStorage();
 
     public static void main(String[] args) {
-        Path path = Paths.get("C:\\Users\\Hardec\\Desktop");
+        Path path = Paths.get("C:\\Users\\Hardec\\Desktop\\ResumeBaseProject\\storage\\");
 
-        try (DirectoryStream<Path> dir = Files.newDirectoryStream(path, entry -> (entry.endsWith(".txt")))) {
-            for(Path child : dir){
-                System.out.println(child);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(path.toAbsolutePath());
     }
 }

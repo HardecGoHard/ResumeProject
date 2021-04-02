@@ -9,12 +9,13 @@ import java.io.File;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Random;
 
 import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
     protected AbstractStorage strorage;
-    protected static final File directory = new File("C:");
+    protected static final File DIRECTORY = new File("C:\\Users\\Hardec\\Desktop\\ResumeBaseProject\\storage\\");
 
     protected static final Resume RESUME_1;
     protected static final Resume RESUME_2;
@@ -22,7 +23,7 @@ public abstract class AbstractStorageTest {
     protected static final Resume RESUME_4;
 
     static {
-        RESUME_1 = new Resume("NAME1");
+        RESUME_1 = new Resume("NAME1", "UUID" + new Random().nextInt(50));
         RESUME_1.setContact(ContactType.HOME_PAGE, "www.test1.ru");
         RESUME_1.setContact(ContactType.EMAIL, "lightec@mail.ru");
         RESUME_1.setContact(ContactType.GITHUB, "www.github.com/lightec");
@@ -46,7 +47,7 @@ public abstract class AbstractStorageTest {
         RESUME_1.setResumeSection(ResumeSection.PERSONAL, new ListSection("Качество1", "Качество2",
                         "Качество3", "Качество4 "));
         RESUME_1.setResumeSection(ResumeSection.OBJECTIVE, new TextSection("Моя жизненная позиция"));
-        RESUME_2 = new Resume("NAME2");
+        RESUME_2 = new Resume("NAME2", "UUID" + new Random().nextInt(50));
         RESUME_2.setContact(ContactType.HOME_PAGE, "www.test2.ru");
         RESUME_2.setContact(ContactType.EMAIL, "lightec2@mail.ru");
         RESUME_2.setContact(ContactType.GITHUB, "www.github.com/lightec2");
@@ -67,7 +68,7 @@ public abstract class AbstractStorageTest {
                 "Качество3", "Качество4 "));
         RESUME_2.setResumeSection(ResumeSection.OBJECTIVE, new TextSection("Моя жизненная позиция"));
 
-        RESUME_3 = new Resume("NAME3");
+        RESUME_3 = new Resume("NAME3", "UUID" + new Random().nextInt(50));
         RESUME_3.setContact(ContactType.HOME_PAGE, "www.test3.ru");
         RESUME_3.setContact(ContactType.EMAIL, "lightec3@mail.ru");
         RESUME_3.setContact(ContactType.GITHUB, "www.github.com/lightec3");
@@ -88,7 +89,7 @@ public abstract class AbstractStorageTest {
                 "Качество3", "Качество4 "));
         RESUME_3.setResumeSection(ResumeSection.OBJECTIVE, new TextSection("Моя жизненная позиция"));
 
-        RESUME_4 = new Resume("NAME4");
+        RESUME_4 = new Resume("NAME4", "UUID" + new Random().nextInt(50));
         RESUME_4.setContact(ContactType.HOME_PAGE, "www.test4.ru");
         RESUME_4.setContact(ContactType.EMAIL, "lightec4@mail.ru");
         RESUME_4.setContact(ContactType.GITHUB, "www.github.com/lightec4");
@@ -148,6 +149,7 @@ public abstract class AbstractStorageTest {
         Resume resume = new Resume("Test Name");
         strorage.save(resume);
         assertGet(resume.getUuid());
+        assertTrue(resume.equals(strorage.get(resume.getUuid())));
     }
 
     @Test

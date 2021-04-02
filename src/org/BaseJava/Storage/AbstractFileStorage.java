@@ -6,6 +6,7 @@ import org.BaseJava.Model.Resume;
 import javax.imageio.stream.FileImageInputStream;
 import java.io.*;
 import java.util.*;
+import java.util.function.Consumer;
 
 public abstract class AbstractFileStorage extends AbstractStorage<File> {
     protected File directory;
@@ -25,12 +26,17 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected File getSearchKey(String uuid) {
-        return new File(directory, uuid);
+        return new File(directory,uuid);
     }
 
     @Override
     protected boolean isSearchKeyExsist(File file) {
-        return file != null;
+        for(File file2 : Objects.requireNonNull(directory.listFiles())){
+            if (file.getName().equals(file2.getName())){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -48,7 +54,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(new BufferedOutputStream(new FileOutputStream(file)), resume);
         } catch (IOException e) {
-            throw new StorageException("IO Exception", file.getName());
+            throw new StorageException("IO Exception " + e.getMessage(),  file.getName());
         }
     }
 
@@ -61,13 +67,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] fiels = directory.listFiles();
-        for (Iterator<File> iterator = Arrays.stream(fiels).iterator(); iterator.hasNext(); ) {
-            File st = iterator.next();
-            if (!st.delete()){
-                throw new StorageException("File delete error", st.getAbsolutePath());
-            }
-        }
+         Arrays.stream(directory.listFiles()).parallel().forEach(file -> toDelete(file.getName(),file));
     }
 
     @Override
@@ -79,7 +79,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     public List<Resume> getAll() {
         File[] fiels = directory.listFiles();
-        List<Resume> listResume = new ArrayList<>(fiels.length);
+        List<Resume> listResume = new ArrayList<>();
         if (fiels == null) {
             throw new StorageException("Could not get list file", directory.getName());
         } else {

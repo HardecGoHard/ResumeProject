@@ -1,6 +1,7 @@
 package org.BaseJava.Model;
 
 public enum ContactType {
+
     PHONE("Phone number"),
     EMAIL("Email adress"),
     DISCORD("Discord tag"),
