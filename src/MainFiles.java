@@ -1,11 +1,33 @@
 import java.io.*;
+import java.util.Arrays;
 
 public class MainFiles {
-    public static void main(String[] args) {
-        File file = new File("C:\\Users\\Hardec\\Desktop");
-        printDeepDirectory(file, 0);
-
+    public static void main(String[] args) throws InterruptedException {
+        MyClass myClass = new MyClass();
+        System.out.println(myClass.name1);
+        System.out.println(myClass.name2);
+        Thread thread = new Thread(() -> {
+            myClass.swap();
+        });
+        //thread.start();
+        Thread thread1 = new Thread(() -> {
+            myClass.swap();
+        });
+        Thread thread2 = new Thread(() -> {
+            myClass.swap();
+        });
+        Thread thread3 = new Thread(() -> {
+            myClass.swap();
+        });
+        thread.start();
+        myClass.swap();
+        thread1.start();
+        thread2.start();
+        thread3.start();
+        System.out.println(myClass.name1);
+        System.out.println(myClass.name2);
     }
+
 
     private static void printDeepDirectory(File dir, int value) {
         File[] files = dir.listFiles();
@@ -20,5 +42,23 @@ public class MainFiles {
                 }
             }
         }
+    }
+}
+ class MyClass
+{
+    public String name1 = "Оля";
+    public String name2 = "Лена";
+    {
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+    public void swap()
+    {
+        String s = name1;
+        name1 = name2;
+        name2 = s;
     }
 }

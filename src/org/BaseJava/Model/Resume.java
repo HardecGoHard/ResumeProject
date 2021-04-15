@@ -18,6 +18,9 @@ public class Resume implements Comparable<Resume>, Serializable {
     public Resume(String fullName) {
         this( fullName,UUID.randomUUID().toString());
     }
+    public Resume(){
+        this("TempName");
+    }
 
     public Resume( String fullName,String uuid) {
         Objects.requireNonNull(uuid, "Uuid must be not empty");

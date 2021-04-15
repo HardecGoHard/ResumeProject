@@ -2,6 +2,7 @@ package org.BaseJava.Storage;
 
 import org.BaseJava.Exception.NonExsistArrayStorageException;
 import org.BaseJava.Model.*;
+import org.BaseJava.util.Config;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
 
 public abstract class AbstractStorageTest {
     protected AbstractStorage strorage;
-    protected static final File DIRECTORY = new File("C:\\Users\\Hardec\\Desktop\\ResumeBaseProject\\storage\\");
+    protected static final File DIRECTORY = Config.get().getStorageDir();
 
     protected static final Resume RESUME_1;
     protected static final Resume RESUME_2;

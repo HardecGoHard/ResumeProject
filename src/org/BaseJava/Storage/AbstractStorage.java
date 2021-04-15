@@ -1,9 +1,11 @@
 package org.BaseJava.Storage;
 
+import com.google.gson.InstanceCreator;
 import org.BaseJava.Exception.ExsistArrayStorageException;
 import org.BaseJava.Exception.NonExsistArrayStorageException;
 import org.BaseJava.Model.Resume;
 
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 
@@ -65,6 +67,7 @@ public abstract class AbstractStorage<K> implements IStorage {
         return toGet(searchKey);
     }
 
+
     @Override
     public void delete(String uuid) {
         LOGGER.info("Delete " + uuid);
@@ -76,4 +79,6 @@ public abstract class AbstractStorage<K> implements IStorage {
             throw new NonExsistArrayStorageException("Данное резюме не сущесвтует", uuid);
         }
     }
+
 }
+

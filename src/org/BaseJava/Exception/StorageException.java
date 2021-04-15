@@ -7,4 +7,7 @@ public class StorageException extends RuntimeException {
         super(message);
         this.name = name;
     }
+    public StorageException(String message) {
+        this(message,null);
+    }
 }
