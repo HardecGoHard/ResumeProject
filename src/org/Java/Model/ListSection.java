@@ -32,4 +32,26 @@ public class ListSection extends Section {
         ListSection that = (ListSection) o;
         return Objects.equals(section, that.section);
     }
+
+    @Override
+    public String toHtml() {
+        StringBuilder stringBuilder = new StringBuilder("<ul>\n");
+        for(String s : section){
+            stringBuilder.append("<li>" + s + "</li>\n");
+        }
+        stringBuilder.append("</ul>\n");
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public String toHtmlEdit(ResumeSectionType resumeSectionType) {
+        StringBuilder stringBuilder = new StringBuilder("<dt><b>"+ resumeSectionType.getTitle()+":</b>\n");
+        stringBuilder.append("</ul>\n");
+        for(String s : section){
+            stringBuilder.append("<p><dd><li> <input type='text' name='"+resumeSectionType.toString()+"' size='60'" +
+                    " value='"+s+"'>\n </li></dd></p2>\n");
+        }
+        stringBuilder.append("</ul>\n</dt>");
+        return stringBuilder.toString();
+    }
 }

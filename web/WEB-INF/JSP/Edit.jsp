@@ -1,6 +1,9 @@
 <%@ page import="org.Java.Model.Resume" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.Java.Model.ContactType" %><%--
+<%@ page import="org.Java.Model.ContactType" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="org.Java.Model.ResumeSectionType" %>
+<%@ page import="org.Java.Model.Section" %><%--
   Created by IntelliJ IDEA.
   User: Hardec
   Date: 22.04.2021
@@ -12,7 +15,8 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8"/>
-    <title>Resume Project</title>
+    <% Resume resume =((Resume) request.getAttribute("resume"));%>
+    <title><%=resume.getFullName()%></title>
 </head>
 <body>
 <table
@@ -51,29 +55,39 @@
                 <!--Создаём строку-->
                 <tr>
                     <td>
+                        <form method="post" action="ser" enctype="application/x-www-form-urlencoded">
                         <table border="1" cellpadding="8" cellspacing="0">
-                            <tr>
-                                <th>Имя</th>
-                                <th>Email</th>
-                                <th>Телефон</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <%
-                                for (Resume resume : (List<Resume>) request.getAttribute("resumes")) {
-                            %>
-                            <tr>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=view"><%= resume.getFullName()%></a></td>
-                            <td><%=resume.getContact(ContactType.EMAIL)%></td>
-                            <td><%=resume.getContact(ContactType.PHONE)%></td>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=edit">Редактировать</a></td>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=delete">Удалить</a></td>
-                            </tr>
-                            <%
-                                }
-                            %>
+                            <input type="hidden" name="uuid" value="<%=resume.getUuid()%>">
+                            <h1 align="center"><%=resume.getFullName()%></h1>
+                            <dt><b>Имя:</b></dt>
+                            <dd><input type="text" name="full_name" size="60" value="<%=resume.getFullName()%>"></dd>
+                            <h2 align="center">Контакты:</h2>
+                            <hr>
+                            <dl>
+                                <%for(ContactType contactType : ContactType.values() ){ %>
+                                <p>
+                                <dt><b><%= contactType.getTitle()+": "%></b></dt>
+                                <dd><input type="text" name="<%=contactType.toString()%>" size="60" value="<%=resume.getContact(contactType)%>"></dd>
+                                </p>
+                                <%}%>
+                            </dl>
 
+                            <hr>
+                            <h2 align="center">Секции резюме:</h2>
+                            <dl>
+
+                            </dl>
+                            <hr>
+                            <%for(ResumeSectionType sectionType : ResumeSectionType.values() ){ %>
+                            <p>
+                                <%=resume.getResumeSection(sectionType).toHtmlEdit(sectionType)%>
+                            </p>
+                            <%}%>
                         </table>
+
+                            <button type = "submit">Сохранить</button>
+                            <button onclick="window.history.back()">Отменить</button>
+                        </form>
 
                     </td>
 
@@ -99,3 +113,4 @@
 </table>
 </body>
 </html>
+

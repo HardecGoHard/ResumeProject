@@ -5,6 +5,7 @@ import org.Java.util.DateUtil;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +17,7 @@ public class Organisation implements Serializable {
     private List<Position> listOfPosition;
 
     public Organisation(String name, String url, Position... positions) {
-        this(new Link(name, url),  Arrays.asList(positions));
+        this(new Link(name, url), Arrays.asList(positions));
     }
 
     public Organisation(Link link, List<Position> listOfPosition) {
@@ -37,8 +38,7 @@ public class Organisation implements Serializable {
         return Objects.hash(HomePage);
     }
 
-    public static class Position implements Serializable
-    {
+    public static class Position implements Serializable {
         private static final long serialVersionUID = 1L;
 
         private final String title;
@@ -46,6 +46,12 @@ public class Organisation implements Serializable {
 
         private final LocalDate dateStart;
         private final LocalDate dateEnd;
+        private static DateTimeFormatter europeanDateFormatter;
+
+        static {
+            String europeanDatePattern = "dd.MM.yyyy";
+            europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
+        }
 
         public Position(int yearStart, Month monthStart, String title, String description) {
             this(DateUtil.of(yearStart, monthStart), DateUtil.NOW, title, description);
@@ -64,6 +70,7 @@ public class Organisation implements Serializable {
             this.dateStart = dateStart;
             this.dateEnd = dateEnd;
         }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -79,5 +86,62 @@ public class Organisation implements Serializable {
         public int hashCode() {
             return Objects.hash(title, description, dateStart, dateEnd);
         }
+
+        public String toHtml() {
+            StringBuilder stringBuilder = new StringBuilder("<p>");
+            stringBuilder.append("<h4>" + this.title + "</h4>" + "C " + europeanDateFormatter.format(dateStart) + " по "
+                    + (dateEnd.equals(DateUtil.NOW) ? "сегодняшний день" : europeanDateFormatter.format(dateEnd)));
+            stringBuilder.append("<p>" + this.description + "</p>\n</p>");
+
+
+            return stringBuilder.toString();
+        }
+
+        public String toHtmlEdit(ResumeSectionType resumeSectionType) {
+            StringBuilder stringBuilder = new StringBuilder("<p>\n");
+            stringBuilder.append("<h3>Должность:</h3>\n");
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                    " value='" + this.title + "'></dd>\n");
+            stringBuilder.append("<h4>Дата начала:</h4>\n");
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                    " value='" + "232.2323.3232" + "'></dd>\n");
+            stringBuilder.append("<h4>Дата конца:</h4>\n");
+            if (dateEnd.equals(DateUtil.NOW)) {
+                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                        " value='" + europeanDateFormatter.format(LocalDate.now()) + "'></dd>\n");
+            } else {
+                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                        " value='" + europeanDateFormatter.format(dateEnd) + "'></dd>\n");
+            }
+            stringBuilder.append("<h4>Описание:</h4>\n");
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                    " value='" + description + "'></dd></p>\n");
+            return stringBuilder.toString();
+        }
+    }
+
+    public String toHtml() {
+        StringBuilder stringBuilder = new StringBuilder("<p>");
+        stringBuilder.append("<h4><a href='http://" + HomePage.getUrl() + "'>" + HomePage.getName() + "</a></h4>");
+        stringBuilder.append("\n<ul>");
+        for (Position pos : listOfPosition) {
+            stringBuilder.append("<li>" + pos.toHtml() + "</li>\n");
+        }
+        stringBuilder.append("\n</ul>\n</p>");
+        return stringBuilder.toString();
+    }
+
+    public String toHtmlEdit(ResumeSectionType resumeSectionType) {
+        StringBuilder stringBuilder = new StringBuilder("<p>");
+        stringBuilder.append("<dt><b>Название:</b></dt>\n");
+        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                " value='" + HomePage.getName() + "'></dd>\n");
+        stringBuilder.append("<dt><b>Ссылка:</b></dt>\n");
+        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+                " value='" + HomePage.getUrl() + "'></dd>\n");
+        for (Position pos : listOfPosition) {
+            stringBuilder.append("<li>" + pos.toHtml() + "</li>\n");
+        }
+        return stringBuilder.toString();
     }
 }

@@ -2,7 +2,7 @@ package org.Java.Model;
 
 import java.util.Objects;
 
-public class TextSection extends Section{
+public class TextSection extends Section {
     private static final long serialVersionUID = 1L;
 
     protected String content;
@@ -27,5 +27,18 @@ public class TextSection extends Section{
     @Override
     public int hashCode() {
         return Objects.hash(content);
+    }
+
+    @Override
+    public String toHtml() {
+        return "<p>" + content + "</p>";
+    }
+
+    @Override
+    public String toHtmlEdit(ResumeSectionType resumeSectionType) {
+        return "<p>\n" +
+                "<dt><b>"+ resumeSectionType.getTitle()+"</b></dt>\n" +
+                " <dd><textarea name='"+resumeSectionType.toString()+"'>" +content+ "</textarea></dd>\n" +
+                "</p>";
     }
 }

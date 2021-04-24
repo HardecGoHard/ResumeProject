@@ -2,20 +2,34 @@ package org.Java.Model;
 
 public enum ContactType {
 
-    PHONE("Phone number"),
-    EMAIL("Email adress"),
-    DISCORD("Discord tag"),
-    LINKEDIN("Linkedin link"),
-    GITHUB("Github profile link"),
-    STACKOVERFLOW("Stackoverflow link"),
-    HOME_PAGE("Homepage Link");
-   private String title;
+    PHONE("Телефон"){
+        public String toHtml(String value) {
+            return value + "</br>";
+        }
+    },
+    EMAIL("Email"){
+        @Override
+        public String toHtml(String value) {
+            return "<a href ='mailto:" +value+"'> " + value + "</a> <br>" ;
+        }
+    },
+    DISCORD("Дискорд"),
+    LINKEDIN("Linkedin"),
+    GITHUB("Github"),
+    STACKOVERFLOW("Stackoverflow"),
+    HOME_PAGE("Homepage");
 
-   ContactType(String title){
-       this.title = title;
-   }
+    private String title;
+
+    ContactType(String title) {
+        this.title = title;
+    }
 
     public String getTitle() {
         return title;
+    }
+
+    public String toHtml(String value) {
+        return "<a href =http://" +value+"'> " + value + "</a> <br>";
     }
 }

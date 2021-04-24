@@ -7,7 +7,7 @@ import org.Java.Model.Section;
 import java.io.Reader;
 import java.io.Writer;
 import java.lang.reflect.Type;
-
+//Сеариализация/десереализация из json
 public class ParserJSON {
     private static final GsonBuilder gsonBuilder = new GsonBuilder()
             .registerTypeAdapter(Section.class, new JsonSectionAdapter());
@@ -29,6 +29,7 @@ public class ParserJSON {
     public static <T> String write(Class<T> clazz, T obj) {
         return GSON.toJson(obj, clazz);
     }
+
 
     public static class JsonSectionAdapter<T> implements JsonSerializer<T>, JsonDeserializer<T> {
         private static final String CLASSNAME = "CLASSNAME";

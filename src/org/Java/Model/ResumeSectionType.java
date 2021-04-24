@@ -1,12 +1,12 @@
 package org.Java.Model;
 
 public enum ResumeSectionType {
-    PERSONAL("Personal qualities"),
-    OBJECTIVE("Life position"),
-    ACHIEVEMENT("Achievement"),
-    QUALIFICATIONS("QUALIFICATIONS"),
-    EXPERIENCE("EXPERIENCE"),
-    EDUCATION("EDUCATION");
+    PERSONAL("Персональные качества"),
+    OBJECTIVE("Жизненная позиция"),
+    ACHIEVEMENT("Достижения"),
+    QUALIFICATIONS("Квалификация"),
+    EXPERIENCE("Опыт работы"),
+    EDUCATION("Образование");
 
     private String title;
 

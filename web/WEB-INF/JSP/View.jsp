@@ -1,6 +1,9 @@
 <%@ page import="org.Java.Model.Resume" %>
 <%@ page import="java.util.List" %>
-<%@ page import="org.Java.Model.ContactType" %><%--
+<%@ page import="org.Java.Model.ContactType" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="org.Java.Model.ResumeSectionType" %>
+<%@ page import="org.Java.Model.Section" %><%--
   Created by IntelliJ IDEA.
   User: Hardec
   Date: 22.04.2021
@@ -12,7 +15,8 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8"/>
-    <title>Resume Project</title>
+    <% Resume resume =((Resume) request.getAttribute("resume"));%>
+    <title><%=resume.getFullName()%></title>
 </head>
 <body>
 <table
@@ -51,33 +55,23 @@
                 <!--Создаём строку-->
                 <tr>
                     <td>
-                        <table border="1" cellpadding="8" cellspacing="0">
-                            <tr>
-                                <th>Имя</th>
-                                <th>Email</th>
-                                <th>Телефон</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                            <%
-                                for (Resume resume : (List<Resume>) request.getAttribute("resumes")) {
-                            %>
-                            <tr>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=view"><%= resume.getFullName()%></a></td>
-                            <td><%=resume.getContact(ContactType.EMAIL)%></td>
-                            <td><%=resume.getContact(ContactType.PHONE)%></td>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=edit">Редактировать</a></td>
-                                <td><a href="ser?uuid=<%=resume.getUuid()%>&action=delete">Удалить</a></td>
-                            </tr>
-                            <%
-                                }
-                            %>
 
+                        <table border="1" cellpadding="8" cellspacing="0">
+                            <h1 align="center"><%=resume.getFullName()%></h1>
+                            <h2 align="center">Контакты:</h2>
+                            <hr>
+                            <%for(Map.Entry<ContactType, String> map : resume.getContactEnumMap().entrySet()) { %>
+                                <b><%=map.getKey().getTitle()+": "%></b> <%=map.getKey().toHtml(map.getValue())%>
+                            <%}%>
+                            <hr>
+                            <h2 align="center">Секции резюме:</h2>
+                            <%for(Map.Entry<ResumeSectionType, Section> map : resume.getResumeSectionEnumMap().entrySet()) { %>
+                            <h4><%=map.getKey().getTitle()+": "%></h4> <%=map.getValue().toHtml()%>
+                            <%}%>
+                            <hr>
                         </table>
 
                     </td>
-
-
             </table>
 
             <table

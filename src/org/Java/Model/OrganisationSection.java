@@ -14,4 +14,24 @@ public class OrganisationSection extends Section {
    public OrganisationSection(List<Organisation> listOfOrganisation) {
       this.listOfOrganisation = listOfOrganisation;
    }
+
+   @Override
+   public String toHtml() {
+      StringBuilder stringBuilder = new StringBuilder("<ul>");
+      for(Organisation org : listOfOrganisation){
+         stringBuilder.append("<li>" + org.toHtml() + "</li>\n");
+      }
+      stringBuilder.append("</ul>");
+      return stringBuilder.toString();
+   }
+
+   @Override
+   public String toHtmlEdit(ResumeSectionType resumeSectionType) {
+      StringBuilder stringBuilder = new StringBuilder("<h3>"+ resumeSectionType.getTitle()+":</h3>\n");
+      stringBuilder.append("<ul>\n");
+      for(Organisation org : listOfOrganisation){
+         stringBuilder.append("<li>" + org.toHtmlEdit(resumeSectionType) + "</li>\n");
+      }
+      stringBuilder.append("</ul>\n");
+      return stringBuilder.toString();   }
 }

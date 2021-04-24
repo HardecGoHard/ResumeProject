@@ -7,7 +7,7 @@ public interface IStorage {
 
     void update(Resume resume);
 
-    Object get(String uuid);
+    Resume get(String uuid);
 
     void delete(String uuid);
 

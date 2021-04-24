@@ -43,10 +43,12 @@ public class Resume implements Comparable<Resume>, Serializable {
         resumeSectionEnumMap.put(resumeSectionType,section );
     }
     public String getContact(ContactType type){
-        return contactEnumMap.get(type);
+        String string = contactEnumMap.get(type);
+        return string==null? "": string;
     }
     public Section getResumeSection(ResumeSectionType resumeSectionType){
-        return resumeSectionEnumMap.get(resumeSectionType);
+        Section section= resumeSectionEnumMap.get(resumeSectionType);
+        return section==null? new TextSection(""): section;
     }
 
     public String getFullName() {
