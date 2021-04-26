@@ -1,10 +1,9 @@
 package org.Java.servlets;
 
-import org.Java.Model.ContactType;
-import org.Java.Model.Resume;
-import org.Java.Model.ResumeSectionType;
+import org.Java.Model.*;
 import org.Java.Storage.IStorage;
 import org.Java.util.Config;
+import org.Java.util.DateUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -13,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ResumeServlet extends HttpServlet {
@@ -31,8 +31,41 @@ public class ResumeServlet extends HttpServlet {
             resume.setContact(contactType, request.getParameter(contactType.toString()));
         }
 
-        storage.update(resume);
+        for (ResumeSectionType resumeSectionType : ResumeSectionType.values()) {
+            switch (resumeSectionType) {
+                case QUALIFICATIONS:
+                case OBJECTIVE:
+                    resume.setResumeSection(resumeSectionType,
+                            new TextSection(request.getParameter(resumeSectionType.toString())));
+                    break;
+                case ACHIEVEMENT:
+                case PERSONAL:
+                    resume.setResumeSection(resumeSectionType,
+                            new ListSection(request.getParameterValues(resumeSectionType.toString())));
+                    break;
+                case EXPERIENCE:
+                case EDUCATION:
+                    resume.setResumeSection(resumeSectionType,
+                            new OrganisationSection(new Organisation(
+                                    request.getParameter(resumeSectionType.toString() + ".ORGANISATION.NAME"),
+                                    request.getParameter(resumeSectionType.toString() + ".ORGANISATION.URL"),
+                                    new Organisation.Position(DateUtil.ParseDate(request.getParameter(
+                                            resumeSectionType.toString() + ".POSITION.DATESTART")),
+                                            DateUtil.ParseDate(request.getParameter(resumeSectionType.toString() + ".POSITION.DATEEND")),
+                                            request.getParameter(resumeSectionType.toString() + ".POSITION.NAME"),
+                                            request.getParameter(resumeSectionType.toString() + "..POSITION.DESCRIPTION")))));
+                    break;
+            }
+        }
+        if (storage.get(uuid) != null) {
+            storage.update(resume);
+        }
+        else{
+            storage.save(resume);
+        }
+
         response.sendRedirect("ser");
+
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -50,20 +83,16 @@ public class ResumeServlet extends HttpServlet {
                 response.sendRedirect("ser");
                 return;
             case "view":
-                resume = storage.get(uuid);
-                request.setAttribute("resume", resume);
-                request.getRequestDispatcher("/WEB-INF/JSP/View.jsp").forward(request, response);
-                response.sendRedirect("View.jsp");
-                return;
             case "edit":
                 resume = storage.get(uuid);
-                request.setAttribute("resume", resume);
-                request.getRequestDispatcher("/WEB-INF/JSP/Edit.jsp").forward(request, response);
-                response.sendRedirect("Edit.jsp");
-                return;
+                break;
+            case "add":
+                resume = new Resume();
+                break;
             default:
                 throw new IllegalArgumentException("Action " + action + "is illegal");
         }
-        // response.getWriter().write("storage.get(.toString()");
+        request.setAttribute("resume", resume);
+        request.getRequestDispatcher(("view".equals(action) ? "/WEB-INF/JSP/View.jsp" : "/WEB-INF/JSP/Edit.jsp")).forward(request, response);
     }
 }

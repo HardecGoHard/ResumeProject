@@ -80,7 +80,9 @@
                             <hr>
                             <%for(ResumeSectionType sectionType : ResumeSectionType.values() ){ %>
                             <p>
+
                                 <%=resume.getResumeSection(sectionType).toHtmlEdit(sectionType)%>
+
                             </p>
                             <%}%>
                         </table>

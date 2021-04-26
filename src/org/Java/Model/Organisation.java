@@ -1,6 +1,7 @@
 package org.Java.Model;
 
 import org.Java.util.DateUtil;
+import sun.swing.SwingUtilities2;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -52,7 +53,7 @@ public class Organisation implements Serializable {
             String europeanDatePattern = "dd.MM.yyyy";
             europeanDateFormatter = DateTimeFormatter.ofPattern(europeanDatePattern);
         }
-
+        //Если работает на этой позиции до сих пор
         public Position(int yearStart, Month monthStart, String title, String description) {
             this(DateUtil.of(yearStart, monthStart), DateUtil.NOW, title, description);
         }
@@ -100,21 +101,21 @@ public class Organisation implements Serializable {
         public String toHtmlEdit(ResumeSectionType resumeSectionType) {
             StringBuilder stringBuilder = new StringBuilder("<p>\n");
             stringBuilder.append("<h3>Должность:</h3>\n");
-            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() +".POSITION.NAME' size='60'" +
                     " value='" + this.title + "'></dd>\n");
             stringBuilder.append("<h4>Дата начала:</h4>\n");
-            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
-                    " value='" + "232.2323.3232" + "'></dd>\n");
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + ".POSITION.DATESTART' size='60'" +
+                    " value='" + (dateStart.equals(DateUtil.EMPTY)? " ": europeanDateFormatter.format(dateStart)) + "'></dd>\n");
             stringBuilder.append("<h4>Дата конца:</h4>\n");
             if (dateEnd.equals(DateUtil.NOW)) {
-                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
-                        " value='" + europeanDateFormatter.format(LocalDate.now()) + "'></dd>\n");
+                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + ".POSITION.DATEEND' size='60'" +
+                        " value='" + (dateEnd.equals(DateUtil.EMPTY)? " ":europeanDateFormatter.format(LocalDate.now())) + "'></dd>\n");
             } else {
-                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
-                        " value='" + europeanDateFormatter.format(dateEnd) + "'></dd>\n");
+                stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + ".POSITION.DATEEND' size='60'" +
+                        " value='" + (dateEnd.equals(DateUtil.EMPTY)? " ":europeanDateFormatter.format(dateEnd)) + "'></dd>\n");
             }
             stringBuilder.append("<h4>Описание:</h4>\n");
-            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+            stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + ".POSITION.DESCRIPTION' size='60'" +
                     " value='" + description + "'></dd></p>\n");
             return stringBuilder.toString();
         }
@@ -133,14 +134,14 @@ public class Organisation implements Serializable {
 
     public String toHtmlEdit(ResumeSectionType resumeSectionType) {
         StringBuilder stringBuilder = new StringBuilder("<p>");
-        stringBuilder.append("<dt><b>Название:</b></dt>\n");
-        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+        stringBuilder.append("<dt><b><h3>Название:</h3></b></dt>\n");
+        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString()+".ORGANISATION.NAME' size='60'" +
                 " value='" + HomePage.getName() + "'></dd>\n");
         stringBuilder.append("<dt><b>Ссылка:</b></dt>\n");
-        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + "' size='60'" +
+        stringBuilder.append("<dd><input type='text' name='" + resumeSectionType.toString() + ".ORGANISATION.URL' size='60'" +
                 " value='" + HomePage.getUrl() + "'></dd>\n");
         for (Position pos : listOfPosition) {
-            stringBuilder.append("<li>" + pos.toHtml() + "</li>\n");
+            stringBuilder.append("<li>" + pos.toHtmlEdit(resumeSectionType) + "</li>\n");
         }
         return stringBuilder.toString();
     }

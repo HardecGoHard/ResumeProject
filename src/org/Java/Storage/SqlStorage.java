@@ -69,8 +69,8 @@ public class SqlStorage implements IStorage {
 
     @Override
     public Resume get(String uuid) {
-        Resume resume = new Resume();
-        sqlUtil.sqlTransaction(connection -> {
+        return sqlUtil.sqlTransaction(connection -> {
+            Resume resume = null;
             try {
                 try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM resume WHERE uuid = ?")) {
                     ps.setString(1, uuid);
@@ -78,6 +78,7 @@ public class SqlStorage implements IStorage {
                     if (!resultSet.next()) {
                         throw new SQLException();
                     }
+                    resume = new Resume();
                     resume.setFullName(resultSet.getString("full_name"));
                     resume.setUuid(uuid);
                 }
@@ -88,9 +89,8 @@ public class SqlStorage implements IStorage {
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
-            return null;
+            return resume;
         });
-        return resume;
     }
 
     @Override
@@ -112,7 +112,8 @@ public class SqlStorage implements IStorage {
         sqlUtil.sqlTransaction(connection ->
         {
             try {
-                try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM resume")) {
+                try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM resume " +
+                        "ORDER BY full_name, uuid")) {
                     ResultSet resultSet = ps.executeQuery();
                     while (resultSet.next()){
                         String uuid = resultSet.getString("uuid");

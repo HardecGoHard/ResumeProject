@@ -46,7 +46,7 @@ public class ListSection extends Section {
     @Override
     public String toHtmlEdit(ResumeSectionType resumeSectionType) {
         StringBuilder stringBuilder = new StringBuilder("<dt><b>"+ resumeSectionType.getTitle()+":</b>\n");
-        stringBuilder.append("</ul>\n");
+        stringBuilder.append("<ul>\n");
         for(String s : section){
             stringBuilder.append("<p><dd><li> <input type='text' name='"+resumeSectionType.toString()+"' size='60'" +
                     " value='"+s+"'>\n </li></dd></p2>\n");

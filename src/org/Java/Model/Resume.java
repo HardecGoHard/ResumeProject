@@ -1,6 +1,9 @@
 package org.Java.Model;
 
+import org.Java.util.DateUtil;
+
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.EnumMap;
 import java.util.Map;
 import java.util.Objects;
@@ -48,7 +51,24 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
     public Section getResumeSection(ResumeSectionType resumeSectionType){
         Section section= resumeSectionEnumMap.get(resumeSectionType);
-        return section==null? new TextSection(""): section;
+        if (section==null) {
+            switch (resumeSectionType) {
+                case QUALIFICATIONS:
+                case OBJECTIVE:
+                    section = new TextSection("");
+                    break;
+                case ACHIEVEMENT:
+                case PERSONAL:
+                    section = new ListSection("", "", "", "", "", "");
+                    break;
+                case EXPERIENCE:
+                case EDUCATION:
+                    section = new OrganisationSection(new Organisation("", "",
+                            new Organisation.Position(DateUtil.EMPTY, DateUtil.EMPTY, "", "")));
+                    break;
+            }
+        }
+        return section;
     }
 
     public String getFullName() {

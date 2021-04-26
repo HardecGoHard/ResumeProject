@@ -35,7 +35,7 @@
                     <th>
                         <!--Содержание ячейки столбца-->
                         <h1>Java resume project</h1>
-                        <h3>с ипользованием Java servelets, JSP, JDBC,</h3>
+                        <h3>с ипользованием Java servelets, JSP, JDBC</h3>
                         <h2><a href="ser">Управление резюме</a></h2>
                         <!--Закрываем таблицу-->
                     </th>
@@ -72,12 +72,9 @@
                             <%
                                 }
                             %>
-
                         </table>
-
+                        <a href="ser?action=add"><img src="image/add.png" width="50" height="50"></a>
                     </td>
-
-
             </table>
 
             <table

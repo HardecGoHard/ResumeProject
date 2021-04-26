@@ -3,6 +3,7 @@ import org.Java.Model.Resume;
 import org.Java.Model.ResumeSectionType;
 import org.Java.Storage.IStorage;
 import org.Java.util.Config;
+import org.Java.util.DateUtil;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -14,12 +15,8 @@ public class MainFiles {
     private static IStorage storage = Config.get().getStorage();
 
     public static void main(String[] args) throws InterruptedException {
-        Resume resume = storage.get("UUID1");
-        for (ResumeSectionType sectionType : ResumeSectionType.values()) {
 
-            System.out.println(resume.getResumeSection(sectionType).toHtmlEdit(sectionType));
-
-        }
     }
+
 
 }
