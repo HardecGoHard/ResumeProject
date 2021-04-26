@@ -1,2 +1,3 @@
-# ResumeBaseProjec
-deployed on heroku: https://resumehardec.herokuapp.com/ser
+# ResumeBaseProject
+deployed on heroku: https://resumehardec.herokuapp.com
+
